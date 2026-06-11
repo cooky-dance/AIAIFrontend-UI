@@ -5,6 +5,7 @@ node_modules/
 out/
 coverage/
 *.log
+*.tsbuildinfo
 .streamlit/secrets.toml
 .env
 .env.local
