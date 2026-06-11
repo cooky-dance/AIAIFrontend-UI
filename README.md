@@ -2,6 +2,8 @@
 
 AI 短片自动化创作控制台。本项目正在开发中。
 
+[English README](README.en.md)
+
 目标形态：
 
 项目设定 -> 角色设定 -> 风格模板 -> 提示词生成 -> 出图 -> 生视频 -> 评分 -> Skill 沉淀 -> 下次复用。
@@ -128,6 +130,85 @@ ai-creative-agent/
 ```
 
 当前仓库已经创建 `apps/web`、`packages/providers`、`packages/prompt-engine`、`packages/skill-engine`、`prisma` 和 `data` 基础目录。后续会继续补齐 Provider adapter、浏览器半自动模块、Claude Code Skill 初始结构和实际页面功能。
+
+## Future Official / Gateway API Integration
+
+后期会同时支持官方 API 与中转 API。两者必须通过统一 Provider adapter 接入，前端不直接写具体模型请求逻辑。
+
+### Official API
+
+- 面向 OpenAI Image API 等官方接口。
+- API Key 只从服务端 `.env` 读取，例如 `OPENAI_API_KEY`。
+- 前端只选择 provider、模型参数和生成输入，不暴露密钥。
+- Provider 负责请求、错误处理、结果保存和 GenerationRun 创建。
+
+### Gateway API
+
+- 面向 AIAI / Seedance2 等中转或兼容接口。
+- 使用 `endpointKind=gateway`、`baseUrl`、`apiKeyEnv`、`defaultModel` 描述配置。
+- 支持异步视频任务：`createTask`、`getTask`、状态轮询、失败原因记录。
+- 中转接口参数不写死在页面里，统一收敛到 `packages/providers`。
+
+### Provider Adapter Contract
+
+```ts
+export interface GenerationProvider {
+  id: string
+  name: string
+  type: "api" | "manual" | "browser"
+  createTask(input: CreateTaskInput): Promise<CreateTaskResult>
+  getTask(taskId: string): Promise<GetTaskResult>
+}
+```
+
+当前已加入：
+
+- `packages/providers/src/api-endpoints.ts`
+- `packages/providers/src/openai-image.ts`
+- `packages/providers/src/seedance2.ts`
+- `packages/providers/src/manual-provider.ts`
+- `packages/providers/src/browser-provider-base.ts`
+- `packages/providers/src/registry.ts`
+
+## UI Design
+
+控制台 UI 设计目标是服务日常创作和复盘，而不是营销展示。
+
+- 首页展示当前项目、最近生成结果、最近评分、可复用提示词、Skill 草稿数量、Provider 状态。
+- 页面风格保持本地 SaaS 控制台感：清晰边框、稳定信息密度、少装饰、便于长时间使用。
+- 核心流程保持单向：项目设定 -> 角色设定 -> 风格模板 -> 提示词生成 -> 生成结果 -> 评分 -> 经验沉淀。
+- API 真实接入前，所有生成区显示明确的开发中 / mock / placeholder 状态。
+- Browser Provider 默认 semi-auto，不把全自动网页操作作为 MVP 核心。
+
+## Prompt Reuse Rules
+
+提示词复用必须建立在评分和可追溯来源上。
+
+1. 只有保存为 `GenerationRun` 且完成评分的提示词，才进入复用候选。
+2. 优先复用 `overallScore >= 8` 且 `shouldReuse=true` 的提示词。
+3. `shouldAvoid=true` 的提示词默认只作为避坑案例，不进入常规复用。
+4. 复用时必须保留角色核心特征、风格标签、镜头、光线和 negative prompt。
+5. 每次复用都记录来源 `run_id`，方便追溯成功经验。
+6. 没有评分的数据不进入正式 Skill。
+
+## Skill Sedimentation Rules
+
+Skill 沉淀必须先生成草稿，再人工审核。
+
+1. 重复出现 3 次以上的经验才允许生成 Skill 草稿。
+2. 正向经验和避坑经验分开沉淀。
+3. 每条规则都必须保留来源 `run_id`。
+4. Skill 草稿输出到 `data/skills-drafts/`。
+5. 人工审核后才能合并到 `.claude/skills/`。
+6. 系统不能自动覆盖正式 Skill。
+7. 不要把一次偶然结果写成长期规则。
+
+当前已创建初始 Skill：
+
+- `.claude/skills/prompt-director/SKILL.md`
+- `.claude/skills/image2-character-prompt/SKILL.md`
+- `.claude/skills/seedance2-video-prompt/SKILL.md`
+- `.claude/skills/skill-curator/SKILL.md`
 
 ## Development Status
 

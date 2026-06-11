@@ -60,6 +60,11 @@ model ProviderConfig {
   providerKey String
   type        String
   enabled     Boolean  @default(true)
+  endpointKind String?
+  baseUrl     String?
+  apiKeyEnv   String?
+  defaultModel String?
+  config      String?
   mode        String?
   profileDir  String?
   downloadDir String?
