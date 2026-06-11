@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model GenerationRun {
+  id             String   @id @default(cuid())
+  projectId      String?
+  characterId    String?
+  styleId        String?
+  type           String
+  provider       String
+  providerType   String
+  model          String?
+  prompt         String
+  negativePrompt String?
+  inputImageUrl  String?
+  outputUrl      String?
+  aspectRatio    String?
+  status         String   @default("succeeded")
+  metadata       String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  review         Review?
+}
+
+model Review {
+  id                String        @id @default(cuid())
+  runId             String        @unique
+  overallScore      Int
+  characterScore    Int?
+  styleScore        Int?
+  compositionScore  Int?
+  lightingScore     Int?
+  detailScore       Int?
+  stabilityScore    Int?
+  motionScore       Int?
+  cameraScore       Int?
+  continuityScore   Int?
+  editabilityScore  Int?
+  liked             String?
+  problems          String?
+  nextRule          String?
+  shouldReuse       Boolean       @default(false)
+  shouldAvoid       Boolean       @default(false)
+  shouldMakeSkill   Boolean       @default(false)
+  tags              String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  run               GenerationRun @relation(fields: [runId], references: [id])
+}
+
+model ProviderConfig {
+  id          String   @id @default(cuid())
+  name        String
+  providerKey String
+  type        String
+  enabled     Boolean  @default(true)
+  mode        String?
+  profileDir  String?
+  downloadDir String?
+  status      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SkillDraft {
+  id           String   @id @default(cuid())
+  title        String
+  skillName    String
+  content      String
+  sourceRunIds String
+  status       String   @default("draft")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
