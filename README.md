@@ -15,6 +15,120 @@ AI 短片自动化创作控制台。本项目正在开发中。
 - `prisma/schema.prisma`: SQLite 数据模型起点
 - `data/*`: runs、feedback、downloads、browser profiles、Skill drafts 的本地数据目录
 
+## System Layers
+
+```text
+AI 短片自动化创作控制台
+├─ 前端控制台
+│  ├─ 项目库
+│  ├─ 角色库
+│  ├─ 风格库
+│  ├─ 提示词生成器
+│  ├─ 出图任务
+│  ├─ 视频任务
+│  ├─ 评分系统
+│  └─ Skill 草稿管理
+│
+├─ Provider 系统
+│  ├─ API Provider
+│  │  ├─ OpenAI Image API
+│  │  └─ Seedance2 API
+│  │
+│  ├─ Manual Provider
+│  │  ├─ 一键复制提示词
+│  │  ├─ 手动生成
+│  │  └─ 手动上传结果
+│  │
+│  └─ Browser Provider
+│     ├─ Playwright Chromium
+│     ├─ 独立登录 profile
+│     ├─ semi-auto 半自动
+│     └─ full-auto 预留
+│
+├─ 数据层
+│  ├─ SQLite
+│  ├─ Prisma
+│  ├─ GenerationRun
+│  ├─ Review
+│  ├─ ProviderConfig
+│  └─ SkillDraft
+│
+└─ Agent 工作流
+   ├─ Codex：开发代码
+   └─ Claude Code：维护规则和 Skill
+```
+
+核心原则：
+
+前端是生产车间，Codex 是工程师，Claude Code 是经验管理员，用户是导演和审美决策者。
+
+## Project Directory Design
+
+Codex 和 Claude Code 应该引用同一个项目根目录，也就是同一个 Git 仓库。
+
+目标目录结构：
+
+```text
+ai-creative-agent/
+├─ apps/
+│  └─ web/
+│     ├─ app/
+│     ├─ components/
+│     ├─ lib/
+│     └─ api/
+│
+├─ packages/
+│  ├─ prompt-engine/
+│  ├─ providers/
+│  │  ├─ provider-types.ts
+│  │  ├─ openai-image.ts
+│  │  ├─ seedance2.ts
+│  │  ├─ manual-provider.ts
+│  │  ├─ browser-provider-base.ts
+│  │  └─ example-browser-provider.ts
+│  │
+│  ├─ browser-automation/
+│  │  ├─ launch.ts
+│  │  ├─ profile.ts
+│  │  ├─ login-check.ts
+│  │  └─ download.ts
+│  │
+│  └─ skill-engine/
+│
+├─ prisma/
+│  └─ schema.prisma
+│
+├─ data/
+│  ├─ runs/
+│  ├─ feedback/
+│  ├─ downloads/
+│  ├─ browser-profiles/
+│  └─ skills-drafts/
+│
+├─ .claude/
+│  ├─ skills/
+│  │  ├─ prompt-director/
+│  │  │  └─ SKILL.md
+│  │  ├─ image2-character-prompt/
+│  │  │  └─ SKILL.md
+│  │  ├─ seedance2-video-prompt/
+│  │  │  └─ SKILL.md
+│  │  └─ skill-curator/
+│  │     └─ SKILL.md
+│  │
+│  └─ agents/
+│
+├─ CLAUDE.md
+├─ AGENTS.md
+├─ README.md
+├─ .env
+├─ .env.example
+├─ package.json
+└─ tsconfig.json
+```
+
+当前仓库已经创建 `apps/web`、`packages/providers`、`packages/prompt-engine`、`packages/skill-engine`、`prisma` 和 `data` 基础目录。后续会继续补齐 Provider adapter、浏览器半自动模块、Claude Code Skill 初始结构和实际页面功能。
+
 ## Development Status
 
 当前阶段：Phase 1，前端 MVP 与数据闭环。
