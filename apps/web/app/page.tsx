@@ -111,9 +111,17 @@ export default function DashboardPage() {
               本项目正在开发中，目标是搭建一个本地可用的 AI 短片创作控制台：管理项目、角色和风格，生成图片与视频提示词，保存结果评分，并沉淀可复用经验。
             </p>
           </div>
-          <div className="flex items-center gap-3 rounded border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-            <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
-            <span>开发中，当前提供框架首页和规则骨架</span>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link
+              href="/generate"
+              className="flex items-center justify-center rounded bg-teal-700 px-4 py-3 text-sm font-medium text-white hover:bg-teal-800"
+            >
+              Seedance2 视频生成
+            </Link>
+            <div className="flex items-center gap-3 rounded border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+              <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
+              <span>开发中，当前提供框架首页和规则骨架</span>
+            </div>
           </div>
         </header>
 
