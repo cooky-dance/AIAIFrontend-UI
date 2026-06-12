@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const stageItems = [
   { label: "当前阶段", value: "Phase 1", detail: "前端 MVP 与数据闭环" },
   { label: "工作方式", value: "Semi-auto", detail: "先半自动，后全自动" },
