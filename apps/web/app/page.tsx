@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const stageItems = [
   { label: "当前阶段", value: "Phase 1", detail: "前端 MVP 与数据闭环" },
   { label: "工作方式", value: "Semi-auto", detail: "先半自动，后全自动" },
@@ -25,6 +27,11 @@ const dashboardPanels = [
     title: "结果与评分",
     body: "保存 GenerationRun，记录评分、问题、复用规则和 Skill 草稿入口。",
     status: "待实现"
+  },
+  {
+    title: "Seedance2 视频生成",
+    body: "通过统一 Provider 调用 AIAI 中转 API，提交文生视频 / 图生视频任务并轮询状态。",
+    status: "可用"
   }
 ];
 
@@ -104,9 +111,17 @@ export default function DashboardPage() {
               本项目正在开发中，目标是搭建一个本地可用的 AI 短片创作控制台：管理项目、角色和风格，生成图片与视频提示词，保存结果评分，并沉淀可复用经验。
             </p>
           </div>
-          <div className="flex items-center gap-3 rounded border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-            <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
-            <span>开发中，当前提供框架首页和规则骨架</span>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link
+              href="/generate"
+              className="flex items-center justify-center rounded bg-teal-700 px-4 py-3 text-sm font-medium text-white hover:bg-teal-800"
+            >
+              Seedance2 视频生成
+            </Link>
+            <div className="flex items-center gap-3 rounded border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+              <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
+              <span>开发中，当前提供框架首页和规则骨架</span>
+            </div>
           </div>
         </header>
 
