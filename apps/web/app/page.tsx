@@ -27,6 +27,11 @@ const dashboardPanels = [
     title: "结果与评分",
     body: "保存 GenerationRun，记录评分、问题、复用规则和 Skill 草稿入口。",
     status: "待实现"
+  },
+  {
+    title: "Seedance2 视频生成",
+    body: "通过统一 Provider 调用 AIAI 中转 API，提交文生视频 / 图生视频任务并轮询状态。",
+    status: "可用"
   }
 ];
 
