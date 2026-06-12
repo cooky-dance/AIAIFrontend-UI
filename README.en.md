@@ -130,6 +130,15 @@ Open:
 http://localhost:3000
 ```
 
+On Windows, you can also double-click `双击启动_AI短片创作控制台.bat`.
+The launcher includes a small menu for:
+
+- Next.js main console: `http://127.0.0.1:3000`
+- Streamlit AIAI gateway test tool: `http://127.0.0.1:8501`
+- Dependency check / install
+
+`双击启动_aiai_seedance2_frontend.bat` is kept only as a compatibility entry and now forwards to the new launcher.
+
 ## Environment
 
 Copy `.env.example` to `.env` and fill values locally.
@@ -148,5 +157,3 @@ The previous local Seedance2 Streamlit test tool is still kept:
 pip install -r requirements.txt
 streamlit run aiai_seedance2_frontend.py
 ```
-
-On Windows, you can also double-click `双击启动_aiai_seedance2_frontend.bat`.
